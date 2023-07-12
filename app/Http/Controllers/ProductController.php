@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,6 @@ class ProductController extends Controller
             ->take(16)
             ->get();
 
-        return view('products.index', compact('products'));
+        return Inertia::render('Products/allProducts', ['products' => $products]);
     }
 }

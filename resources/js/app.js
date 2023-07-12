@@ -1,15 +1,23 @@
 import './bootstrap';
+import '../css/app.css';
 
-import Alpine from 'alpinejs';
-import { createApp } from 'vue';
-import AddToCart from './components/AddToCart.vue';
+import { createApp, h } from 'vue';
+import { createInertiaApp } from '@inertiajs/vue3';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
-window.Alpine = Alpine;
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-Alpine.start();
-
-const app = createApp(); //qui nous permettra de générer une instance de vue, qui vient de la ligne 1 dans le cas actuel
-
-app.component('AddToCart', AddToCart); //enregister le component auprès de vue pour pouvoir l'utiliser 
-
-app.mount('#app');
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
+    setup({ el, App, props, plugin }) {
+        return createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .use(ZiggyVue, Ziggy)
+            .mount(el);
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});
