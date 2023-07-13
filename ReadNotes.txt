@@ -116,3 +116,20 @@ Bon à savoir : meme si on veut utiliser un << emitter >> sur une seule vue, c'e
   * npm install @meforma/vue-toaster
   * Après on l'a importé et utilisé localement en suivant la documentation dans le README.md de la librairie 
   
+*** On passe maintenant au Recapitulatif du panier ***
+On va créer un nouveau component, ShoppingCart pour afficher le Recapitulatif du panier
+on va maintenant creer la vue meme; 
+  - Dans Pages, on a créé un sous-dossier "ShoppingCart" et dedans on a mis un index.vue pour l'affichage, c'est dans cet index.vue, qu'on a importé le component créé en amont
+on est allé prendre ce petit composant template tailwind CSS : https://tailwindcomponents.com/component/shopping-cart pour l'affichage de panier
+
+on créé toujours nos methodes reutilisables dont on aura besoin dans notre index.js (\resources\js\composables\products\index.js) concernant les produits
+Là on a créé : 
+- et initialisé avec ref, une const products qui va contenir les infos de tous les produits du panier 
+- une methode (getProducts()) pour prendre les infos de tous les produits du panier vers la vue 
+
+on se crée un helper pour se formater les prix pour l'affichage dans le panier 
+et on utilisera dans ce helper, une petite methode javascript qui permet de formater en ajoutant meme les devises :
+ - new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(price) 
+
+--- IMPORTANT ---
+Des fois quand les codes ou composants Tailwind CSS ne fonctionnent pas bien, faut couper le serveur vue js, refaire npm install et npm run dev

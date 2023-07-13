@@ -14,7 +14,11 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $contenu = (new CartRepository())->content(); //Dans le repository, gerant tout ce dont on a besoin pour le panier, on a a créé la methode content() pour nous prendre le contenu du panier de la personne connecté 
+
+        return response()->json([
+            'cartContent' => $contenu 
+        ]);
     }
 
     /**
