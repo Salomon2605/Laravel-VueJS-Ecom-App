@@ -33,7 +33,7 @@ import { Head } from '@inertiajs/vue3';
                                         </svg>
                                     </div>
                                     <div class="bg-yellow-200 py-1.5 px-6 rounded-full">
-                                        <p class="text-xs text-yellow-700 focus:outline-none">{{ product.price }}</p>
+                                        <p class="text-xs text-yellow-700 focus:outline-none">{{ product.formatted_price }}</p>
                                     </div>
                                 </div>
                                 <div class="p-4">
@@ -51,7 +51,7 @@ import { Head } from '@inertiajs/vue3';
                                         </div>
                                     </div> -->
                                     <!-- <add-to-cart :product-id="{{ $product->id }}"></add-to-cart> -->
-                                    <AddToCart></AddToCart>
+                                    <AddToCart :product-id = "product.id"></AddToCart>
                                 </div>
                             </div>
                         </div>
