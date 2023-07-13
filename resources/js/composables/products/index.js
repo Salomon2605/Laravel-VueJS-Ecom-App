@@ -5,7 +5,7 @@ export default function useProduct() //on va y nettre tous les appels aux APIs q
             productId: productId
         });
 
-        console.log(response);
+        return response.data.count;
     }
 
     const getCount = async() => {

@@ -69,7 +69,7 @@ nous utilisons la librairie de darryldecode, du coup on va simplement copier sur
 On a fait un formatted_price dans le model Product, qui est different du price meme car il est formaté pour la vue tandis que le price n'est pas formaté et sera utiliser pour les paiements
 
 API COMPOSITION
-On va mettre les methodes reutilisable dans un autre fichier les utiliser à chaque fois qu'on en a besoin, cela nous evitera de copier les memes codes à chaque fois. Pour le faire :
+On va mettre les methodes reutilisables dans un autre fichier les utiliser à chaque fois qu'on en a besoin, cela nous evitera de copier les memes codes à chaque fois. Pour le faire :
  - on a créé un dossier "composables" on le nomme comme on veut; c'est lui qui contiendra les reutilisables;
  - on a créé un sous-dossier "products" pour y mettre toutes les methodes qui concernent les produits uniquement
  - dans ce dossier on a créé un fichier .js (ex: index.js) qui va contenir les codes meme des methodes
@@ -83,5 +83,25 @@ On va mettre les methodes reutilisable dans un autre fichier les utiliser à cha
  (...)
 
 On doit maintenant faire en sorte que le chiffre au niveau du panier s'actualise lorqu'on fait Ajouter au Panier
-On aura besoin de creer de petits evenements entre composants, donc on utilisera tiny-emitter
- + 
+On aura besoin de creer de petits evenements entre composants, donc on utilisera << tiny-emitter >> qui nous permettra de faire ça vraiment simplement (https://www.npmjs.com/package/tiny-emitter)
+ + npm install tiny-emitter --save
+ + Voilà comment il fonctionne : 
+   * on l'importe : import Emitter from 'tiny-emitter';
+   * on crée une nouvelle instance pour l'utiliser : const nomEmitter = new Emitter();
+   * On l'emet avec la syntaxe : nomEmitter.emit('unNomDappel', 'arg1', 'arg2', ...);
+   * On l'écoute et on travaille dedans avec : 
+      emitter.on('unNomDappel', (param) => {
+        cartCount.value = param; (on a mis count en param parce que la reponse qui vient dans le emit, vient sous la forme 'param' => ...., on utilise ce qui vient depuis là bas) 
+      });
+ + Simplement comme ci-dessus, ça fonctionne quand tout est sur la meme vue, dans mon cas j'ai des components distincts, l'emission de l'emitter se fait au niveau du component AddToCart pour l'ajout au panier et la mise à jour automatique du nombre au niveau du panier se fait dans le component NavBarCart :
+   * si sur chaque vue, on fait le import et la new instance pour << emitter >>, cela ne fonctionnera pas, rappelons que c'est la meme instance qui est emise au niveau du AddToCart, qui sera ecouté au niveau du NavBarCart, si on fait new sur les deux vues, on aura rien
+   * pour le faire donc, etant donné notre emitter sera exploité dans deux components, on va créer une constante réutilisable à part qui sera importé dans le AddToCart et le NavBarCart, je suis dons allé dans mon dossier où je mets les fichiers contenant les methodes réutilisables, et j'ai créé un nouveau fichier .js (j'ai donné le nom eventBus.js) dans lequel j'ai fait l'import de tiny-emitter et j'ai créé la new instance que les deux components vont exploiter, l'un s'occupe de l'emission et l'autre s'occupe de l'ecoute de l'evenement.
+     = dans mon eventBus.js, pour creer les instances que plusieurs vues exploiteront : (des exemples)
+        - export const nomEmitter = new Emitter();
+        - export const cartEmitter = new Emitter();
+        - export const userEmitter = new Emitter();
+     bien sur apres avoir importé Emitter avec "import Emitter from 'tiny-emitter';" 
+     = pour importer les emitters là où ils seront exploités, on fait par exemple :
+        - import { cartEmitter } from '../composables/products/eventBus';
+    après l'avoir importé, on travaille dessus seulement comme fait dans les fichiers AdddToCart.vue et NavBarCart.vue 
+Bon à savoir : meme si on veut utiliser un << emitter >> sur une seule vue, c'est plus propre de le creer ailleurs et de l'importer 

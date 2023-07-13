@@ -12,9 +12,12 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import useProduct from '../composables/products/index';
+import { cartEmitter } from '../composables/products/eventBus';
 
 const { getCount } = useProduct();
 const cartCount = ref(0);
+
+cartEmitter.on('cartCountUpdated', (count) => cartCount.value = count); //on a mis count en param parce que la reponse qui vient dans le emit, vient sous la forme 'count' => ...., on utilise ce qui vient depuis là bas
 
 onMounted(async() => {
     cartCount.value = await getCount();
