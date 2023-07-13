@@ -8,11 +8,14 @@
 </template>
 
 <script setup>
+    import { createToaster } from "@meforma/vue-toaster";
     import useProduct from '../composables/products/index';
     import { cartEmitter } from '../composables/products/eventBus';
 
     const { add } = useProduct(); //destructuration de la methode add pour l'utiliser
     const productId = defineProps(['product-id']);
+
+    const toaster = createToaster();
 
     const addToCart = async() => {
         await axios.get('/sanctum/csrf-cookie'); //on recupère le token csrf 
@@ -22,7 +25,11 @@
             
             //on va emettre l'evenement, syntaxe : emitter.emit('unNomDappel', 'arg1', 'arg2', ...);
             cartEmitter.emit('cartCountUpdated', cartCount);
+            toaster.success("Produit ajouté au panier", { position: "top", duration: 3000});
         })
-        .catch(err => console.log(err));
+        .catch(() => {
+            // alert("Merci de vous connecter pour ajouter un produit.");
+            toaster.error("Merci de vous connecter pour ajouter un produit.", { position: "top", duration: 3000});
+        });
     }
 </script>
