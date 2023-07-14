@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShoppingCartController;
+use App\Http\Controllers\StripeCheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/checkout', [StripeCheckoutController::class, 'create']);
+Route::post('/paymentIntent', [StripeCheckoutController::class, 'paymentIntent']);
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

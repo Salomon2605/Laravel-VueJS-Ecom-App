@@ -72,4 +72,25 @@ class CartRepository
         //pour l'enlever du panier, on utilisera la methode remove() de la librairie en lui passant l'id du produit à enlevé du panier
         \Cart::session(auth()->user()->id)->remove($id);
     }
+
+    public function total()
+    {
+        return \Cart::session(auth()->user()->id)->getTotal();
+
+        //pour avoir le prix total, on a une methode getTotal() dans la librairie qui permet d'avoir le prix total du panier 
+    }
+
+    //pour recuperer tous les elements du panier en Json pour les infos complementaires qu'on veut joindre au paiement
+    public function getJsonOrderItems()
+    {
+        $this->content()
+             ->map(function ($item) {
+                return [
+                    'name' => $item->name,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price
+                ];
+             })
+             ->toJson();
+    }
 }

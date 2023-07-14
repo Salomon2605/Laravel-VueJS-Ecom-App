@@ -133,3 +133,39 @@ et on utilisera dans ce helper, une petite methode javascript qui permet de form
 
 --- IMPORTANT ---
 Des fois quand les codes ou composants Tailwind CSS ne fonctionnent pas bien, faut couper le serveur vue js, refaire npm install et npm run dev
+
+On passe à l'installation du mode de paiement STRIPE 
+  + Faut se créer un compte et se rendre sur Developpeurs
+  + Cliquer sur l'onglet Applications -> Afficher la documentation
+  + Dans la documentation Stripe DOCS, onglet Payments -> Menu à gauche -> Démarrer -> Démarrage Rapide 
+  + Selectionner en haut nos langages pour le frontEnd et le backEnd 
+INSTALLATION 
+  + composer require stripe/stripe-php
+  + npm install @stripe/stripe-js
+Apres on a besoin de route pour appeler les paiements 
+Donc on va créer les controllers et les routes nécessaires 
+on a importé le necessaire pour stripe dans le fichier principale (app.js dans notre cas actuel)
+
+Maintenant, on vient au code php meme de stripe, on doit aussi recuperer notre clé d'API
+ + Pour bien faire les choses, on ira se créer un fichier << stripe.php >> dans le dossier config
+ + Dans ce fichier nous allons stocker nos clés d'API 
+
+On prend et on utilise les codes fourni par STRIPE pour l'implémentation de leur outil 
+
+Pour récapituler, stripe fournit les codes nécessaires selon les langages qu'on a selectionné, dans notre cas j'ai selectionné HTML 
+pour le FrontEnd et PHP pour le backEnd, donc voici comment on a procédé :
+ + d'abord stripe a fournit du code  
+   - dans un fichier create.php et un autre secrets.php,
+   - dans un fichier checkout.html,
+   - dans un fichier checkout.js,
+   - dans un fichier checkout.css.
+ + on a créé deux routes dans le web.php, une en get pour aller vers la page de paiement et une seconde en post pour le paiement même;
+ + apres on a copié le code php fournit par stripe dans la fonction du controller, vers lequel redirige la route en post, rappelons 
+   que le code php fournit par stripe permet de lancer le paiement même;
+ + sur la page de paiement, on a ouvert les balises <style> en "scoped" et on a copié tout le code css fournit pas stripe (dans checkout.css) 
+   et on l'a collé à l'intérieur des balises <style>
+ + quant au code html, on a copié le code qui était dans le body dans checkout.html et on l'a collé à l'intérieur de notre page de paiement;
+ + il y avait aussi ce CDN "<script src="https://js.stripe.com/v3/"></script>" qui etait importé sur le checkout.html, qu'on a dû importer 
+ sur la page mère de toutes les vues (app.js dans notre cas actuel).
+
+A chaque partie, on doit adapter le code.

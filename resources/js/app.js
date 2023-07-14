@@ -8,6 +8,13 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
+// Créer l'élément script
+const script = document.createElement('script');
+script.src = 'https://js.stripe.com/v3/';
+
+// Ajouter le script au head du document
+document.head.appendChild(script);
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
