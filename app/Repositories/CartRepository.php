@@ -37,4 +37,39 @@ class CartRepository
         //pour avoir la quantité totale de produits
         return $this->content()->sum('quantity');
     }
+
+    //pour augmenter la quantité pour un produit
+    public function increase($id)
+    {
+        \Cart::session(auth()->user()->id) //on récupère le panier de celui qui est authentifié
+               ->update($id, [  //dans la librairie on a une méthode update qu'on utilise pour les mises à jour et qui prend en paramètres l'id du produit et les modifications à apporter
+                    'quantity' => +1
+               ]);
+    }
+
+    //pour diminuer la quantité pour un produit
+    public function decrease($id)
+    {
+        //on recupere le produit concerné avec la methode get de la librairie et l'id du produit
+        $item = \Cart::session(auth()->user()->id)->get($id);
+
+        if ($item->quantity === 1) //on verifie si la quantité est egal 1 pour carrement le supprimer 
+        {
+            $this->removeProduct($id);
+            
+            return;
+
+        } else {
+            \Cart::session(auth()->user()->id) //on récupère le panier de celui qui est authentifié
+               ->update($id, [  //dans la librairie on a une méthode update qu'on utilise pour les mises à jour et qui prend en paramètres l'id du produit et les modifications à apporter
+                    'quantity' => -1
+            ]);
+        }
+    }
+
+    public function removeProduct($id)
+    {
+        //pour l'enlever du panier, on utilisera la methode remove() de la librairie en lui passant l'id du produit à enlevé du panier
+        \Cart::session(auth()->user()->id)->remove($id);
+    }
 }

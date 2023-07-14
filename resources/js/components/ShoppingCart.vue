@@ -28,7 +28,7 @@
                                 <a href="#">
                                     <p class="mb-2 md:ml-4" v-text="product.name"></p>
                                     <form action="" method="POST">
-                                        <button type="submit" class="text-gray-700 md:ml-4">
+                                        <button v-on:click.prevent="destroy(product.id)" class="text-gray-700 md:ml-4">
                                             <small>(Supprimer le produit)</small>
                                         </button>
                                     </form>
@@ -36,11 +36,13 @@
                                 </td>
                                 <td class="justify-center md:justify-end md:flex mt-6">
                                     <div class="w-20 h-10">
-                                        <div class="relative flex flex-row w-full h-8">
+                                        <div class="relative flex flex-row w-full h-8 space-x-3">
+                                            <button v-on:click.prevent="decrease(product.id)"> - </button>
                                             <input 
-                                                type="number" :value="product.quantity" 
+                                                readonly :value="product.quantity" 
                                                 class="w-full font-semibold text-center text-gray-700 bg-gray-200 outline-none focus:outline-none hover:text-black focus:text-black" 
                                             />
+                                            <button v-on:click.prevent="increase(product.id)"> + </button>
                                         </div>
                                     </div>
                                 </td>
@@ -69,7 +71,7 @@
                                     Total
                                 </div>
                                 <div class="lg:px-4 lg:py-2 m-2 lg:text-lg font-bold text-center text-gray-900">
-                                    17,859.3€
+                                    {{ cartTotal }}
                                 </div>
                             </div>
                             <a href="#">
@@ -87,14 +89,51 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import useProduct from '@/composables/products/index';
 import { formatPrice } from '@/composables/helpers/index';
+import { cartEmitter } from '../composables/products/eventBus';
 
-const { products, getProducts } = useProduct();
+const { products, getProducts, increaseQuantity, decreaseQuantity, destroyProduct, cartCount } = useProduct();
+
+// à chaque fois qu'on agit sur un produit, on doit appeler getProducts(), pour que la liste des produits à la vue soit à jour 
+
+const increase = async(id) => {
+    await increaseQuantity(id);
+    await getProducts();
+    cartEmitter.emit('cartCountUpdated', cartCount.value);
+}
+
+const decrease = async(id) => {
+    await decreaseQuantity(id);
+    await getProducts();
+    cartEmitter.emit('cartCountUpdated', cartCount.value);
+}
+
+const destroy = async(id) => {
+    await destroyProduct(id);
+    await getProducts();
+    cartEmitter.emit('cartCountUpdated', cartCount.value);
+}
+
+//Pour avoir le montant total, on va le dynamiser aussi 
+/** 
+ * Computed est utilisée pour declarer une propriété qui est basée sur d'autres propriétés existantes dans le composant
+ * Ensuite on utilisera Object.values() qui est une methode pure Javascript, pour extraire les valeurs de chaque element de products.value
+ * reduce() qui prend en params ici un accumulateur et l'element courant du tableau des produits 
+ * Pour resumer : on prend les produits actuels afiichés, on effectue le calcul total dans un accumulateur
+ *                et apres avoir parcouru tous les éléments de products.value, le total est envoyé dans price, qu'on retourne formaté avec notre helper formatPrice.
+ * Ceux sont les valeurs actuelles à l'affichage qui sont utilisées, donc à chaque fois la valeur des produits dans le composant ici, change, le computed travaille
+ * dans reduce() Le deuxième argument 0 est la valeur initiale de l'accumulateur
+ *  **/
+const cartTotal = computed(() => {
+    let price = Object.values(products.value).reduce((acc, product) => acc += product.price * product.quantity, 0);
+
+    return formatPrice(price);
+});
 
 onMounted(async() => {
-    products.value = await getProducts();
+    await getProducts();
     // console.log(products.value);
 })
 </script>

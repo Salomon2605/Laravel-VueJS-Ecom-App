@@ -4,8 +4,8 @@ Bon à savoir :
     L'architecture des fichiers dans un projet purement Vue.js est différente de celle d'un projet Vue.js + Laravel ensemble.
 
 Pour démarrer, je fais :
-- php artisan serve
-- npm install et npm run dev
+- php artisan serve dans un terminal 
+- npm install et npm run dev dans un autre terminal
         
     *** API Composition ***
 - Quand on a cette erreur : 

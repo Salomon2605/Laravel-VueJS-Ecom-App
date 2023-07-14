@@ -21,6 +21,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     });
 
+    Route::get('products/increase/{id}', [CartController::class, 'increase'])->name('quantity.increase');
+    Route::get('products/decrease/{id}', [CartController::class, 'decrease'])->name('quantity.decrease');
+
     Route::get('products/count', [CartController::class, 'count'])->name('products.count');
     Route::apiResource('products', CartController::class);
 

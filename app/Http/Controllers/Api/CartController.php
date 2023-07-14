@@ -14,10 +14,13 @@ class CartController extends Controller
      */
     public function index()
     {
-        $contenu = (new CartRepository())->content(); //Dans le repository, gerant tout ce dont on a besoin pour le panier, on a a créé la methode content() pour nous prendre le contenu du panier de la personne connecté 
+        $cartContent = (new CartRepository())->content(); //Dans le repository, gerant tout ce dont on a besoin pour le panier, on a a créé la methode content() pour nous prendre le contenu du panier de la personne connecté 
+        
+        $cartCount = (new CartRepository())->count();
 
         return response()->json([
-            'cartContent' => $contenu 
+            'cartContent' => $cartContent, 
+            'cartCount' => $cartCount 
         ]);
     }
 
@@ -53,9 +56,9 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        (new CartRepository())->removeProduct($id);
     }
 
     public function count()
@@ -65,5 +68,15 @@ class CartController extends Controller
         return response()->json([
             'count' => $count
         ]);
+    }
+
+    public function increase($id)
+    {
+        (new CartRepository())->increase($id);
+    }
+
+    public function decrease($id)
+    {
+        (new CartRepository())->decrease($id);
     }
 }
