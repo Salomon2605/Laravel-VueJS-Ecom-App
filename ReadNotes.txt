@@ -169,3 +169,12 @@ pour le FrontEnd et PHP pour le backEnd, donc voici comment on a procédé :
  sur la page mère de toutes les vues (app.js dans notre cas actuel).
 
 A chaque partie, on doit adapter le code.
+
+Bon à savoir : pour les relations entre les models et tout ça, pour attacher les elements :
+ + on utilise attach() pour les relations Many-to-Many 
+   * Ex : $order->products()->attach($product, ['quantity' => $quantity]);
+  Cela permet d'ajouter une ligne dans la table pivot associée, qui établit la relation entre la commande et le produit spécifié, en incluant les attributs supplémentaires (comme la quantité).
+
+ + et associate() pour les relations One-To-Many ou One-to-One
+   * Ex : $order->user()->associate($user);
+  Cela met à jour la clé étrangère correspondante dans le modèle de la commande pour établir la relation avec l'utilisateur spécifié.
