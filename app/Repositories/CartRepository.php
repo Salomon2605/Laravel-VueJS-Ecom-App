@@ -83,7 +83,7 @@ class CartRepository
     //pour recuperer tous les elements du panier en Json pour les infos complementaires qu'on veut joindre au paiement
     public function getJsonOrderItems()
     {
-        $this->content()
+        return $this->content()
              ->map(function ($item) {
                 return [
                     'name' => $item->name,
