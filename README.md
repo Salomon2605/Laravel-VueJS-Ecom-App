@@ -1,6 +1,6 @@
 # Laravel-VueJS-Ecom-App
 
-Application e-commerce réalisé avec Vue JS 3 et Laravel 10.
+Application e-commerce réalisée avec Vue JS 3 et Laravel 10.
 
 ## Fonctionnalités
 
@@ -30,26 +30,26 @@ Application e-commerce réalisé avec Vue JS 3 et Laravel 10.
 git clone https://github.com/Salomon2605/Laravel-VueJS-Ecom-App.git
 
 2. Installez les dépendances du frontend.
-    cd Laravel-VueJS-Ecom-App
-    npm install
-    composer install
+    - cd Laravel-VueJS-Ecom-App
+    - npm install
+    - composer install
 
 3. Configurez les fichiers d'environnement
-    Dupliquez le fichier .env.example dans le dossier backend et renommez-le en .env. 
-    Configurez les variables d'environnement telles que la base de données, les clés d'API, etc.
+    - Dupliquez le fichier .env.example dans le dossier backend et renommez-le en .env. 
+    - Configurez les variables d'environnement telles que la base de données, les clés d'API, etc.
 
 4. Exécutez les migrations et générez une clé d'application.
-    php artisan migrate
-    php artisan key:generate
+    - php artisan migrate
+    - php artisan key:generate
 
 5. Exécutez les seeders pour remplir la base de données avec des données de test.
-    php artisan db:seed
+    - php artisan db:seed
 
 6. Démarrez le serveur de développement.
-    php artisan serve
+    - php artisan serve
 
 7. Démarrez le front
-    npm install
-    npm run dev
+    - npm install
+    - npm run dev
 
 Accédez à l'application dans votre navigateur à l'adresse http://127.0.0.1:8000/.
