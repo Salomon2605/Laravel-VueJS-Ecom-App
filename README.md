@@ -29,7 +29,7 @@ Application e-commerce réalisée avec Vue JS 3 et Laravel 10.
 
 git clone https://github.com/Salomon2605/Laravel-VueJS-Ecom-App.git
 
-2. Installez les dépendances du frontend.
+2. Installez les dépendances du frontend et du backEnd.
     - cd Laravel-VueJS-Ecom-App
     - npm install
     - composer install
